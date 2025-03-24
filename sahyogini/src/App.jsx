@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Navbar } from "./components/navbar";
 import { Footer } from "./components/footer"; // Import Footer
 import Home from "./pages/Home/home";
-// import Signup from "./pages/Auth/Signup";
-// import Login from "./pages/Auth/Login";
+import Signup from "./pages/Auth/signup";
+import Login from "./pages/Auth/login";
 // import InvestorDashboard from "./pages/Dashboard/InvestorDashboard";
 // import BusinessDashboard from "./pages/Dashboard/BusinessDashboard";
 // import FinancingModels from "./pages/Financing/FinancingModels";
@@ -19,8 +19,8 @@ const App = () => {
         <div className="flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />
-            {/* <Route path="/signup" element={<Signup />} />
-            <Route path="/login" element={<Login />} /> */}
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login />} />
             {/* <Route path="/investor-dashboard" element={<InvestorDashboard />} />
             <Route path="/business-dashboard" element={<BusinessDashboard />} />
             <Route path="/financing-models" element={<FinancingModels />} />
