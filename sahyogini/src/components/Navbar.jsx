@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom"; 
+import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react";
-import { Logo } from "./Logo"; 
-import { Button } from "./ui/Button"; 
+import { Logo } from "./Logo";
+import { Button } from "./ui/Button";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -26,7 +26,7 @@ export function Navbar() {
           {navLinks.map((link) => (
             <Link
               key={link.name}
-              to={link.href} 
+              to={link.href}
               className="text-sm font-medium text-gray-700 transition-colors hover:text-primary"
             >
               {link.name}
@@ -36,18 +36,31 @@ export function Navbar() {
 
         <div className="hidden md:flex md:items-center md:space-x-4">
           <Link to="/login">
-            <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
+            <Button
+              variant="outline"
+              className="border-primary text-primary hover:bg-primary hover:text-white"
+            >
               Login
             </Button>
           </Link>
           <Link to="/signup">
-            <Button className="bg-primary text-white hover:bg-primary/90">Sign Up</Button>
+            <Button className="bg-primary text-white hover:bg-primary/90">
+              Sign Up
+            </Button>
           </Link>
         </div>
 
         {/* Mobile Navigation Toggle */}
-        <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Toggle menu">
-          {isMenuOpen ? <X className="h-6 w-6 text-gray-700" /> : <Menu className="h-6 w-6 text-gray-700" />}
+        <button
+          className="md:hidden"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label="Toggle menu"
+        >
+          {isMenuOpen ? (
+            <X className="h-6 w-6 text-gray-700" />
+          ) : (
+            <Menu className="h-6 w-6 text-gray-700" />
+          )}
         </button>
       </div>
 
@@ -75,7 +88,9 @@ export function Navbar() {
                 </Button>
               </Link>
               <Link to="/signup">
-                <Button className="w-full bg-primary text-white hover:bg-primary/90">Sign Up</Button>
+                <Button className="w-full bg-primary text-white hover:bg-primary/90">
+                  Sign Up
+                </Button>
               </Link>
             </div>
           </div>

@@ -5,8 +5,8 @@ import { Footer } from "./components/footer"; // Import Footer
 import Home from "./pages/Home/home";
 import Signup from "./pages/Auth/signup";
 import Login from "./pages/Auth/login";
-// import InvestorDashboard from "./pages/Dashboard/InvestorDashboard";
-// import BusinessDashboard from "./pages/Dashboard/BusinessDashboard";
+import InvestorDashboard from "./pages/dashboard/InvestorDashboard";
+import BusinessDashboard from "./pages/dashboard/BusinessDashboard";
 // import FinancingModels from "./pages/Financing/FinancingModels";
 // import FinancialLiteracy from "./pages/Literacy/FinancialLiteracy";
 // import Mentorship from "./pages/Mentorship/Mentorship";
@@ -21,11 +21,11 @@ const App = () => {
             <Route path="/" element={<Home />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
-            {/* <Route path="/investor-dashboard" element={<InvestorDashboard />} />
+            <Route path="/investor-dashboard" element={<InvestorDashboard />} />
             <Route path="/business-dashboard" element={<BusinessDashboard />} />
-            <Route path="/financing-models" element={<FinancingModels />} />
+            {/* <Route path="/financing-models" element={<FinancingModels />} />
             <Route path="/financial-literacy" element={<FinancialLiteracy />} />
-            <Route path="/mentorship" element={<Mentorship />} /> */}
+            <Route path="/mentorship" element={<Mentorship />}/> */}
           </Routes>
         </div>
         <Footer />
