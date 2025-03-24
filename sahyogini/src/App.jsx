@@ -1,17 +1,35 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home/Home";
-import Signup from "./pages/Auth/Signup";
-import Login from "./pages/Auth/Login";
+import { Navbar } from "./components/navbar";
+import { Footer } from "./components/footer"; // Import Footer
+import Home from "./pages/Home/home";
+// import Signup from "./pages/Auth/Signup";
+// import Login from "./pages/Auth/Login";
+// import InvestorDashboard from "./pages/Dashboard/InvestorDashboard";
+// import BusinessDashboard from "./pages/Dashboard/BusinessDashboard";
+// import FinancingModels from "./pages/Financing/FinancingModels";
+// import FinancialLiteracy from "./pages/Literacy/FinancialLiteracy";
+// import Mentorship from "./pages/Mentorship/Mentorship";
 
 const App = () => {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
+      <Navbar /> {/* Navbar remains at the top */}
+      <div className="flex flex-col min-h-screen">
+        <div className="flex-grow">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            {/* <Route path="/signup" element={<Signup />} />
+            <Route path="/login" element={<Login />} /> */}
+            {/* <Route path="/investor-dashboard" element={<InvestorDashboard />} />
+            <Route path="/business-dashboard" element={<BusinessDashboard />} />
+            <Route path="/financing-models" element={<FinancingModels />} />
+            <Route path="/financial-literacy" element={<FinancialLiteracy />} />
+            <Route path="/mentorship" element={<Mentorship />} /> */}
+          </Routes>
+        </div>
+        <Footer />
+      </div>
     </Router>
   );
 };

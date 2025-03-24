@@ -1,35 +1,86 @@
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link } from "react-router-dom"; 
+import { Menu, X } from "lucide-react";
+import { Logo } from "./Logo"; 
+import { Button } from "./ui/Button"; 
 
-const Navbar = () => {
+const navLinks = [
+  { name: "Home", href: "/" },
+  { name: "Investor Dashboard", href: "/investor-dashboard" },
+  { name: "Business Dashboard", href: "/business-dashboard" },
+  { name: "Financing Models", href: "/financing-models" },
+  { name: "Financial Literacy", href: "/financial-literacy" },
+  { name: "Mentorship", href: "/mentorship" },
+];
+
+export function Navbar() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
-    <div className="w-full bg-blue-50 flex items-center p-5">
-      <div className="flex-1 font-bold text-xl">Logo</div>
+    <nav className="sticky top-0 z-50 w-full border-b bg-white">
+      <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-8">
+        <Logo />
 
-      <div className="mr-2 ml-2 border border-black p-2 cursor-pointer">
-        Option 1
-      </div>
-      <div className="mr-2 ml-2 border border-black p-2 cursor-pointer">
-        Option 2
-      </div>
-      <div className="mr-2 ml-2 border border-black p-2 cursor-pointer">
-        Option 3
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex md:items-center md:space-x-6">
+          {navLinks.map((link) => (
+            <Link
+              key={link.name}
+              to={link.href} 
+              className="text-sm font-medium text-gray-700 transition-colors hover:text-primary"
+            >
+              {link.name}
+            </Link>
+          ))}
+        </div>
+
+        <div className="hidden md:flex md:items-center md:space-x-4">
+          <Link to="/login">
+            <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
+              Login
+            </Button>
+          </Link>
+          <Link to="/signup">
+            <Button className="bg-primary text-white hover:bg-primary/90">Sign Up</Button>
+          </Link>
+        </div>
+
+        {/* Mobile Navigation Toggle */}
+        <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)} aria-label="Toggle menu">
+          {isMenuOpen ? <X className="h-6 w-6 text-gray-700" /> : <Menu className="h-6 w-6 text-gray-700" />}
+        </button>
       </div>
 
-      {/* Login & Signup Buttons */}
-      <div className="ml-auto flex space-x-4">
-        <Link to="/login">
-          <button className="px-4 py-2 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-100">
-            Login
-          </button>
-        </Link>
-        <Link to="/signup">
-          <button className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">
-            Sign Up
-          </button>
-        </Link>
-      </div>
-    </div>
+      {/* Mobile Navigation Menu */}
+      {isMenuOpen && (
+        <div className="container mx-auto px-4 pb-4 md:hidden">
+          <div className="flex flex-col space-y-3">
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                to={link.href}
+                className="rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {link.name}
+              </Link>
+            ))}
+            <div className="flex flex-col space-y-2 pt-2">
+              <Link to="/login">
+                <Button
+                  variant="outline"
+                  className="w-full border-primary text-primary hover:bg-primary hover:text-white"
+                >
+                  Login
+                </Button>
+              </Link>
+              <Link to="/signup">
+                <Button className="w-full bg-primary text-white hover:bg-primary/90">Sign Up</Button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+    </nav>
   );
-};
-
-export default Navbar;
+}
