@@ -10,12 +10,12 @@ import {
   Legend,
 } from "chart.js";
 
-import { Pie, Bar } from "react-chartjs-2";
+import { Pie, Bar, Line } from "react-chartjs-2";
 ChartJS.register(
-  ArcElement, // Needed for Pie/Doughnut charts
-  CategoryScale, // Needed for bar/line charts (X-axis)
-  LinearScale, // Needed for bar/line charts (Y-axis)
-  BarElement, // Needed for Bar charts
+  ArcElement,
+  CategoryScale,
+  LinearScale,
+  BarElement,
   Title,
   Tooltip,
   Legend
@@ -30,6 +30,14 @@ const InvestorDashboard = () => {
     { type: "P2P Lending", value: 15000 },
     { type: "Crowdfunding", value: 10000 },
   ]);
+
+  const totalInvestment = investmentPortfolio.reduce(
+    (acc, investment) => acc + investment.value,
+    0
+  );
+
+  // Portfolio Performance Metrics
+  const growthRate = ((90000 - 50000) / 50000) * 100; // Assuming past vs. current
 
   // Pie Chart Data for Investment Distribution
   const pieChartData = {
@@ -49,7 +57,21 @@ const InvestorDashboard = () => {
       {
         label: "Investment Growth",
         data: [50000, 60000, 75000, 85000, 90000],
-        backgroundColor: "#4CAF50",
+        borderColor: "#4CAF50",
+        fill: false,
+      },
+    ],
+  };
+
+  // Projected Returns (AI-Driven)
+  const projectedReturns = {
+    labels: ["2025", "2026", "2027", "2028", "2029"],
+    datasets: [
+      {
+        label: "Projected Portfolio Value",
+        data: [100000, 120000, 150000, 180000, 210000],
+        borderColor: "#2196F3",
+        fill: false,
       },
     ],
   };
@@ -59,7 +81,37 @@ const InvestorDashboard = () => {
       <h2 className="text-2xl font-bold mb-4">Investor Dashboard</h2>
 
       {/* Investment Summary */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-3 gap-4">
+        <Card>
+          <CardContent>
+            <h3 className="text-lg font-semibold">Total Portfolio Value</h3>
+            <p className="text-2xl font-bold text-green-600">
+              ₹{totalInvestment}
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent>
+            <h3 className="text-lg font-semibold">Growth Rate</h3>
+            <p className="text-2xl font-bold text-blue-600">
+              {growthRate.toFixed(2)}%
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardContent>
+            <h3 className="text-lg font-semibold">AI Projected Returns</h3>
+            <p className="text-2xl font-bold text-purple-600">
+              ₹210,000 by 2029
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Investment Breakdown */}
+      <div className="grid grid-cols-2 gap-4 mt-6">
         {investmentPortfolio.map((investment) => (
           <Card key={investment.type}>
             <CardContent>
@@ -75,7 +127,7 @@ const InvestorDashboard = () => {
       </div>
 
       {/* Charts */}
-      <div className="mt-6 grid grid-cols-2 gap-4">
+      <div className="mt-6 grid grid-cols-3 gap-4">
         <div>
           <h3 className="text-lg font-semibold mb-2">
             Investment Distribution
@@ -85,7 +137,12 @@ const InvestorDashboard = () => {
 
         <div>
           <h3 className="text-lg font-semibold mb-2">Investment Growth</h3>
-          <Bar data={investmentGrowthData} />
+          <Line data={investmentGrowthData} />
+        </div>
+
+        <div>
+          <h3 className="text-lg font-semibold mb-2">Projected Returns</h3>
+          <Line data={projectedReturns} />
         </div>
       </div>
     </div>
