@@ -11,7 +11,6 @@ import BusinessDashboard from "./pages/dashboard/BusinessDashboard";
 import FinancialLiteracy from "./pages/Literacy/FinancialLiteracy";
 import Mentorship from "./pages/Mentorship/Mentorship";
 import CommunityForum from "./pages/Community/CommunityForum";
-import FinancingModels from "./pages/financingModels/FinancingModel";
 const App = () => {
   return (
     <Router>
@@ -28,7 +27,6 @@ const App = () => {
             <Route path="/financial-literacy" element={<FinancialLiteracy />} />
             <Route path="/mentorship" element={<Mentorship />} />
             <Route path="/community-forum" element={<CommunityForum />} />
-            <Route path="/financing-models" element={<FinancingModels />} />
           </Routes>
         </div>
         <Footer />
