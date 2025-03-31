@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Assuming you're using React Router for navigation
 
-function DocumentVerification() {
+function DocumentVerification({ model }) {
   const [uploadedDocs, setUploadedDocs] = useState({});
   const [verificationStatus, setVerificationStatus] = useState({});
   const [isUploading, setIsUploading] = useState({});
+  const navigate = useNavigate(); // React Router's navigation hook
 
   const requiredDocuments = [
     { type: 'business_registration', name: 'Business Registration Certificate', description: 'Official document proving business registration.', acceptedFormats: '.jpg,.jpeg,.png,.pdf' },
@@ -38,8 +40,26 @@ function DocumentVerification() {
   const progress = Math.round((Object.keys(verificationStatus).length / requiredDocuments.length) * 100);
   const allDocumentsVerified = Object.keys(verificationStatus).length === requiredDocuments.length;
 
+  const handleProceed = () => {
+    switch (model) {
+      case 'Peer-to-Peer Lending':
+        navigate('/peer-to-peer-lending');
+        break;
+      case 'Crowdfunding':
+        navigate('/crowdfunding');
+        break;
+      case 'Revenue-Based Financing':
+        navigate('/revenue-based-financing');
+        break;
+      case 'Impact Investors Matching':
+        navigate('/impact-investors-matching');
+        break;
+      default:
+        alert('Invalid funding type selected.');
+    }
+  };
+
   return (
-    <>
     <div style={styles.container}>
       <div style={styles.card}>
         <h1 style={styles.heading}>Business Document Verification</h1>
@@ -88,13 +108,13 @@ function DocumentVerification() {
         {allDocumentsVerified && (
           <>
             <p style={styles.successMessage}>All documents are verified! You can now proceed with the funding process.</p>
-            <button style={styles.proceedButton} onClick={() => alert('Proceeding to secure payment...')}>
+            <button style={styles.proceedButton} onClick={handleProceed}>
               Proceed with securing payment for your business
             </button>
           </>
         )}
       </div>
-    </div></>
+    </div>
   );
 }
 

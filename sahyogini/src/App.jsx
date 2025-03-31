@@ -7,10 +7,10 @@ import Signup from "./pages/Auth/signup";
 import Login from "./pages/Auth/login";
 import InvestorDashboard from "./pages/dashboard/InvestorDashboard";
 import BusinessDashboard from "./pages/dashboard/BusinessDashboard";
-// import FinancingModels from "./pages/Financing/FinancingModels";
 import FinancialLiteracy from "./pages/Literacy/FinancialLiteracy";
 import Mentorship from "./pages/Mentorship/Mentorship";
 import CommunityForum from "./pages/Community/CommunityForum";
+import FinancingModels from "./pages/financingModels/Models";
 const App = () => {
   return (
     <Router>
@@ -23,7 +23,7 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/investor-dashboard" element={<InvestorDashboard />} />
             <Route path="/business-dashboard" element={<BusinessDashboard />} />
-            {/* <Route path="/financing-models" element={<FinancingModels />} /> */}
+            <Route path="/financing-models" element={<FinancingModels />} />
             <Route path="/financial-literacy" element={<FinancialLiteracy />} />
             <Route path="/mentorship" element={<Mentorship />} />
             <Route path="/community-forum" element={<CommunityForum />} />
