@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Assuming you're using React Router for navigation
+import Crowdfunding from './Crowdfunding';
+import RevenueFundingApplication from './RevenueBased';
+import PeerToPeerLending from './PeerToPeerLending';
 
 function DocumentVerification({ model }) {
+  // Debug the model prop
+  console.log("Current model prop:", model);
+
   const [uploadedDocs, setUploadedDocs] = useState({});
   const [verificationStatus, setVerificationStatus] = useState({});
   const [isUploading, setIsUploading] = useState({});
-  const navigate = useNavigate(); // React Router's navigation hook
+  const [showFundingComponent, setShowFundingComponent] = useState(false); // State to show the funding component
 
   const requiredDocuments = [
     { type: 'business_registration', name: 'Business Registration Certificate', description: 'Official document proving business registration.', acceptedFormats: '.jpg,.jpeg,.png,.pdf' },
@@ -13,7 +18,7 @@ function DocumentVerification({ model }) {
     { type: 'tax_identification', name: 'Tax Identification Number (TIN/PAN)', description: 'Proof of tax compliance.', acceptedFormats: '.jpg,.jpeg,.png,.pdf' },
     { type: 'bank_statement', name: 'Bank Account Statement', description: 'Recent business bank account statement.', acceptedFormats: '.jpg,.jpeg,.png,.pdf' },
     { type: 'financial_statements', name: 'Financial Statements', description: 'Profit & Loss, Balance Sheet (last fiscal year).', acceptedFormats: '.jpg,.jpeg,.png,.pdf' },
-    { type: 'id_proof', name: 'Owner/Director ID Proof', description: 'Passport, Driver’s License, or Aadhaar.', acceptedFormats: '.jpg,.jpeg,.png,.pdf' },
+    { type: 'id_proof', name: 'Owner/Director ID Proof', description: 'Passport, Driver\'s License, or Aadhaar.', acceptedFormats: '.jpg,.jpeg,.png,.pdf' },
     { type: 'address_proof', name: 'Business Address Proof', description: 'Lease Agreement, Utility Bill, etc.', acceptedFormats: '.jpg,.jpeg,.png,.pdf' },
     { type: 'board_resolution', name: 'Board Resolution for Signatory', description: 'Applicable for companies with an authorized signatory.', acceptedFormats: '.jpg,.jpeg,.png,.pdf' },
     { type: 'industry_license', name: 'Industry-Specific License', description: 'E.g., FSSAI (Food), Drug License, Import/Export Code.', acceptedFormats: '.jpg,.jpeg,.png,.pdf' },
@@ -32,6 +37,7 @@ function DocumentVerification({ model }) {
       setTimeout(() => {
         setVerificationStatus((prev) => ({ ...prev, [docType]: 'verified' }));
         setIsUploading((prev) => ({ ...prev, [docType]: false }));
+        // Fixed alert syntax with proper backticks
         alert(`${docType} has been successfully verified.`);
       }, 2000);
     }, 1500);
@@ -41,23 +47,25 @@ function DocumentVerification({ model }) {
   const allDocumentsVerified = Object.keys(verificationStatus).length === requiredDocuments.length;
 
   const handleProceed = () => {
-    switch (model) {
-      case 'Peer-to-Peer Lending':
-        navigate('/peer-to-peer-lending');
-        break;
-      case 'Crowdfunding':
-        navigate('/crowdfunding');
-        break;
-      case 'Revenue-Based Financing':
-        navigate('/revenue-based-financing');
-        break;
-      case 'Impact Investors Matching':
-        navigate('/impact-investors-matching');
-        break;
-      default:
-        alert('Invalid funding type selected.');
-    }
+    console.log("Proceeding with funding type:", model); // Debug log
+    setShowFundingComponent(true); // Show the funding component
   };
+
+  if (showFundingComponent) {
+    console.log("Showing funding component for model:", model); // Debug log
+    
+    // Render the appropriate funding type component based on the model prop
+    switch (model.name) {
+      case 'Peer-to-Peer Lending':
+        return <PeerToPeerLending />;
+      case 'Crowdfunding':
+        return <Crowdfunding />;
+      case 'Revenue-Based Financing':
+        return <RevenueFundingApplication />;
+      default:
+        return <p>Invalid funding type selected. Current model: {model || "undefined"}</p>;
+    }
+  }
 
   return (
     <div style={styles.container}>
@@ -166,6 +174,14 @@ const styles = {
     alignItems: "center",
     marginBottom: "10px",
   },
+  documentInfo: {
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+  },
+  documentIcon: {
+    fontSize: "20px",
+  },
   documentName: {
     fontWeight: "bold",
     color: "#333",
@@ -244,6 +260,7 @@ const styles = {
     fontSize: "16px",
     fontWeight: "bold",
     transition: "background 0.3s, transform 0.2s",
+    width: "100%",
   },
 };
 
