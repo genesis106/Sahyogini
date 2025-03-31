@@ -45,17 +45,9 @@ export default function FinancialLiteracyPage() {
                 </Link>
               </div>
             </div>
-            {/* // <div className="relative h-[400px] w-full rounded-lg shadow-xl">
-            //   <Image
-            //     src="/placeholder.svg?height=400&width=600"
-            //     alt="Women in a workshop"
-            //     fill
-            //     className="rounded-lg object-cover"
-            //   />
-            // </div> */}
             <div className="relative h-[400px] w-full rounded-lg shadow-xl">
               <img
-                src="/placeholder.svg"
+                src="/women2.jpg"
                 alt="Women entrepreneurs"
                 className="rounded-lg object-cover w-full h-full"
               />
