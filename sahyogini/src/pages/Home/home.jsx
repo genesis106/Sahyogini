@@ -33,7 +33,7 @@ export default function Home() {
             </div>
             <div className="relative h-[400px] w-full rounded-lg shadow-xl">
               <img
-                src="/placeholder.svg"
+                src="/women1.jpg"
                 alt="Women entrepreneurs"
                 className="rounded-lg object-cover w-full h-full"
               />
