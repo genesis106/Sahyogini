@@ -25,7 +25,7 @@ export default function LoginPage() {
           {/* Image Section */}
           <div className="relative hidden md:block">
             <img
-              src="/placeholder.svg"
+              src="/wlogin.jpeg"
               alt="Rural women entrepreneur"
               className="object-cover w-full h-full"
             />

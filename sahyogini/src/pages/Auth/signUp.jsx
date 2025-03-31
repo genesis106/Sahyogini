@@ -25,7 +25,7 @@ export default function SignupPage() {
         <div className="grid w-full max-w-[1200px] grid-cols-1 overflow-hidden rounded-xl shadow-lg md:grid-cols-2">
           <div className="relative hidden md:block">
             <img
-              src="/placeholder.svg?height=600&width=600"
+              src="/wsign.jpg?height=600&width=600"
               alt="Rural women entrepreneur"
               className="object-cover w-full h-full"
             />
