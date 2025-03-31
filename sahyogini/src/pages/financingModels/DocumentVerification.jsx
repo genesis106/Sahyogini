@@ -1,30 +1,72 @@
 import React, { useState } from 'react';
+import { useLanguage } from '../../context/LanguageContext'; // Import the language context
 import Crowdfunding from './Crowdfunding';
 import RevenueFundingApplication from './RevenueBased';
 import PeerToPeerLending from './PeerToPeerLending';
 
 function DocumentVerification({ model }) {
-  // Debug the model prop
-  console.log("Current model prop:", model);
-
+  const { language } = useLanguage(); // Get the current language from the context
   const [uploadedDocs, setUploadedDocs] = useState({});
   const [verificationStatus, setVerificationStatus] = useState({});
   const [isUploading, setIsUploading] = useState({});
-  const [showFundingComponent, setShowFundingComponent] = useState(false); // State to show the funding component
+  const [showFundingComponent, setShowFundingComponent] = useState(false);
 
-  const requiredDocuments = [
-    { type: 'business_registration', name: 'Business Registration Certificate', description: 'Official document proving business registration.', acceptedFormats: '.jpg,.jpeg,.png,.pdf' },
-    { type: 'business_license', name: 'Business License', description: 'Legal license issued by local authorities.', acceptedFormats: '.jpg,.jpeg,.png,.pdf' },
-    { type: 'tax_identification', name: 'Tax Identification Number (TIN/PAN)', description: 'Proof of tax compliance.', acceptedFormats: '.jpg,.jpeg,.png,.pdf' },
-    { type: 'bank_statement', name: 'Bank Account Statement', description: 'Recent business bank account statement.', acceptedFormats: '.jpg,.jpeg,.png,.pdf' },
-    { type: 'financial_statements', name: 'Financial Statements', description: 'Profit & Loss, Balance Sheet (last fiscal year).', acceptedFormats: '.jpg,.jpeg,.png,.pdf' },
-    { type: 'id_proof', name: 'Owner/Director ID Proof', description: 'Passport, Driver\'s License, or Aadhaar.', acceptedFormats: '.jpg,.jpeg,.png,.pdf' },
-    { type: 'address_proof', name: 'Business Address Proof', description: 'Lease Agreement, Utility Bill, etc.', acceptedFormats: '.jpg,.jpeg,.png,.pdf' },
-    { type: 'board_resolution', name: 'Board Resolution for Signatory', description: 'Applicable for companies with an authorized signatory.', acceptedFormats: '.jpg,.jpeg,.png,.pdf' },
-    { type: 'industry_license', name: 'Industry-Specific License', description: 'E.g., FSSAI (Food), Drug License, Import/Export Code.', acceptedFormats: '.jpg,.jpeg,.png,.pdf' },
-    { type: 'trade_license', name: 'Trade License', description: 'Permission for conducting business activities.', acceptedFormats: '.jpg,.jpeg,.png,.pdf' },
-    { type: 'partnership_deed', name: 'Partnership Deed', description: 'Applicable for partnerships, outlining responsibilities.', acceptedFormats: '.jpg,.jpeg,.png,.pdf' }
-  ];
+  // Content object with translations for English and Hindi
+  const content = {
+    en: {
+      heading: 'Business Document Verification',
+      subheading: 'Upload and verify all required documents to proceed with the funding process.',
+      progressTitle: 'Verification Progress:',
+      verified: '✓ Verified',
+      upload: 'Upload',
+      uploading: 'Uploading...',
+      file: 'File:',
+      successMessage: 'All documents are verified! You can now proceed with the funding process.',
+      proceedButton: 'Proceed with securing payment for your business',
+      invalidModel: 'Invalid funding type selected.',
+      documents: [
+        { type: 'business_registration', name: 'Business Registration Certificate', description: 'Official document proving business registration.' },
+        { type: 'business_license', name: 'Business License', description: 'Legal license issued by local authorities.' },
+        { type: 'tax_identification', name: 'Tax Identification Number (TIN/PAN)', description: 'Proof of tax compliance.' },
+        { type: 'bank_statement', name: 'Bank Account Statement', description: 'Recent business bank account statement.' },
+        { type: 'financial_statements', name: 'Financial Statements', description: 'Profit & Loss, Balance Sheet (last fiscal year).' },
+        { type: 'id_proof', name: 'Owner/Director ID Proof', description: 'Passport, Driver’s License, or Aadhaar.' },
+        { type: 'address_proof', name: 'Business Address Proof', description: 'Lease Agreement, Utility Bill, etc.' },
+        { type: 'board_resolution', name: 'Board Resolution for Signatory', description: 'Applicable for companies with an authorized signatory.' },
+        { type: 'industry_license', name: 'Industry-Specific License', description: 'E.g., FSSAI (Food), Drug License, Import/Export Code.' },
+        { type: 'trade_license', name: 'Trade License', description: 'Permission for conducting business activities.' },
+        { type: 'partnership_deed', name: 'Partnership Deed', description: 'Applicable for partnerships, outlining responsibilities.' },
+      ],
+    },
+    hi: {
+      heading: 'व्यवसाय दस्तावेज़ सत्यापन',
+      subheading: 'फंडिंग प्रक्रिया जारी रखने के लिए सभी आवश्यक दस्तावेज़ अपलोड और सत्यापित करें।',
+      progressTitle: 'सत्यापन प्रगति:',
+      verified: '✓ सत्यापित',
+      upload: 'अपलोड करें',
+      uploading: 'अपलोड हो रहा है...',
+      file: 'फ़ाइल:',
+      successMessage: 'सभी दस्तावेज़ सत्यापित हो गए हैं! अब आप फंडिंग प्रक्रिया जारी रख सकते हैं।',
+      proceedButton: 'अपने व्यवसाय के लिए भुगतान सुरक्षित करने के लिए आगे बढ़ें',
+      invalidModel: 'चयनित फंडिंग प्रकार अमान्य है।',
+      documents: [
+        { type: 'business_registration', name: 'व्यवसाय पंजीकरण प्रमाणपत्र', description: 'व्यवसाय पंजीकरण साबित करने वाला आधिकारिक दस्तावेज़।' },
+        { type: 'business_license', name: 'व्यवसाय लाइसेंस', description: 'स्थानीय अधिकारियों द्वारा जारी कानूनी लाइसेंस।' },
+        { type: 'tax_identification', name: 'कर पहचान संख्या (TIN/PAN)', description: 'कर अनुपालन का प्रमाण।' },
+        { type: 'bank_statement', name: 'बैंक खाता विवरण', description: 'हाल का व्यवसाय बैंक खाता विवरण।' },
+        { type: 'financial_statements', name: 'वित्तीय विवरण', description: 'लाभ और हानि, बैलेंस शीट (पिछले वित्तीय वर्ष)।' },
+        { type: 'id_proof', name: 'मालिक/निदेशक पहचान प्रमाण', description: 'पासपोर्ट, ड्राइविंग लाइसेंस, या आधार।' },
+        { type: 'address_proof', name: 'व्यवसाय पता प्रमाण', description: 'लीज एग्रीमेंट, यूटिलिटी बिल, आदि।' },
+        { type: 'board_resolution', name: 'प्राधिकृत हस्ताक्षरकर्ता के लिए बोर्ड प्रस्ताव', description: 'कंपनियों के लिए लागू।' },
+        { type: 'industry_license', name: 'उद्योग-विशिष्ट लाइसेंस', description: 'जैसे, FSSAI (खाद्य), ड्रग लाइसेंस, आयात/निर्यात कोड।' },
+        { type: 'trade_license', name: 'व्यापार लाइसेंस', description: 'व्यवसाय गतिविधियों के संचालन की अनुमति।' },
+        { type: 'partnership_deed', name: 'साझेदारी विलेख', description: 'साझेदारी के लिए लागू।' },
+      ],
+    },
+  };
+
+  // Use the content for the current language
+  const c = content[language];
 
   const handleFileUpload = (docType) => (e) => {
     const file = e.target.files[0];
@@ -37,24 +79,19 @@ function DocumentVerification({ model }) {
       setTimeout(() => {
         setVerificationStatus((prev) => ({ ...prev, [docType]: 'verified' }));
         setIsUploading((prev) => ({ ...prev, [docType]: false }));
-        // Fixed alert syntax with proper backticks
-        alert(`${docType} has been successfully verified.`);
+        alert(`${docType} ${c.verified}`);
       }, 2000);
     }, 1500);
   };
 
-  const progress = Math.round((Object.keys(verificationStatus).length / requiredDocuments.length) * 100);
-  const allDocumentsVerified = Object.keys(verificationStatus).length === requiredDocuments.length;
+  const progress = Math.round((Object.keys(verificationStatus).length / c.documents.length) * 100);
+  const allDocumentsVerified = Object.keys(verificationStatus).length === c.documents.length;
 
   const handleProceed = () => {
-    console.log("Proceeding with funding type:", model); // Debug log
-    setShowFundingComponent(true); // Show the funding component
+    setShowFundingComponent(true);
   };
 
   if (showFundingComponent) {
-    console.log("Showing funding component for model:", model); // Debug log
-    
-    // Render the appropriate funding type component based on the model prop
     switch (model.name) {
       case 'Peer-to-Peer Lending':
         return <PeerToPeerLending />;
@@ -63,17 +100,17 @@ function DocumentVerification({ model }) {
       case 'Revenue-Based Financing':
         return <RevenueFundingApplication />;
       default:
-        return <p>Invalid funding type selected. Current model: {model || "undefined"}</p>;
+        return <p>{c.invalidModel}</p>;
     }
   }
 
   return (
     <div style={styles.container}>
       <div style={styles.card}>
-        <h1 style={styles.heading}>Business Document Verification</h1>
-        <p style={styles.subheading}>Upload and verify all required documents to proceed with the funding process.</p>
+        <h1 style={styles.heading}>{c.heading}</h1>
+        <p style={styles.subheading}>{c.subheading}</p>
         <div style={styles.documentList}>
-          {requiredDocuments.map((doc) => (
+          {c.documents.map((doc) => (
             <div key={doc.type} style={styles.documentItem}>
               <div style={styles.documentHeader}>
                 <div style={styles.documentInfo}>
@@ -81,43 +118,43 @@ function DocumentVerification({ model }) {
                   <span style={styles.documentName}>{doc.name}</span>
                 </div>
                 {verificationStatus[doc.type] ? (
-                  <span style={styles.verifiedBadge}>✓ Verified</span>
+                  <span style={styles.verifiedBadge}>{c.verified}</span>
                 ) : (
                   <button
                     style={styles.uploadButton}
                     onClick={() => document.getElementById(`file-${doc.type}`).click()}
                     disabled={isUploading[doc.type]}
                   >
-                    {isUploading[doc.type] ? 'Uploading...' : 'Upload'}
+                    {isUploading[doc.type] ? c.uploading : c.upload}
                   </button>
                 )}
               </div>
               <p style={styles.documentDescription}>{doc.description}</p>
-              {uploadedDocs[doc.type] && <p style={styles.fileName}>File: {uploadedDocs[doc.type]}</p>}
+              {uploadedDocs[doc.type] && <p style={styles.fileName}>{c.file} {uploadedDocs[doc.type]}</p>}
               <input
                 type="file"
                 id={`file-${doc.type}`}
                 onChange={handleFileUpload(doc.type)}
                 style={{ display: 'none' }}
-                accept={doc.acceptedFormats}
+                accept=".jpg,.jpeg,.png,.pdf"
               />
             </div>
           ))}
         </div>
         <div style={styles.progressSection}>
-          <p style={styles.progressTitle}>Verification Progress:</p>
+          <p style={styles.progressTitle}>{c.progressTitle}</p>
           <div style={styles.progressBarContainer}>
             <div style={{ ...styles.progressBar, width: `${progress}%` }}></div>
           </div>
           <p style={styles.progressText}>
-            {Object.keys(verificationStatus).length} of {requiredDocuments.length} documents verified
+            {Object.keys(verificationStatus).length} of {c.documents.length} {language === 'en' ? 'documents verified' : 'दस्तावेज़ सत्यापित'}
           </p>
         </div>
         {allDocumentsVerified && (
           <>
-            <p style={styles.successMessage}>All documents are verified! You can now proceed with the funding process.</p>
+            <p style={styles.successMessage}>{c.successMessage}</p>
             <button style={styles.proceedButton} onClick={handleProceed}>
-              Proceed with securing payment for your business
+              {c.proceedButton}
             </button>
           </>
         )}
@@ -125,7 +162,6 @@ function DocumentVerification({ model }) {
     </div>
   );
 }
-
 const styles = {
   container: {
     fontFamily: "'Roboto', sans-serif",

@@ -11,6 +11,8 @@ import {
 } from "chart.js";
 
 import { Pie, Bar, Line } from "react-chartjs-2";
+import { useLanguage } from "../../context/LanguageContext";
+
 ChartJS.register(
   ArcElement,
   CategoryScale,
@@ -24,12 +26,92 @@ ChartJS.register(
 import { Card, CardContent } from "../../components/ui/card";
 
 const InvestorDashboard = () => {
-  const [investmentPortfolio, setInvestmentPortfolio] = useState([
-    { type: "Equity", value: 40000 },
-    { type: "Debt", value: 20000 },
-    { type: "P2P Lending", value: 15000 },
-    { type: "Crowdfunding", value: 10000 },
-  ]);
+  const { language } = useLanguage();
+
+  // Content object with English and Hindi translations
+  const content = {
+    en: {
+      title: "Investor Dashboard",
+      summary: {
+        portfolioValue: "Total Portfolio Value",
+        growthRate: "Growth Rate",
+        projectedReturns: "AI Projected Returns",
+        projectedValue: "₹210,000 by 2029"
+      },
+      investments: {
+        distribution: "Investment Distribution",
+        growth: "Investment Growth",
+        projected: "Projected Returns",
+        suffix: "Investments"
+      },
+      types: {
+        Equity: "Equity",
+        Debt: "Debt",
+        P2P: "P2P Lending",
+        Crowdfunding: "Crowdfunding"
+      },
+      months: ["Jan", "Feb", "Mar", "Apr", "May"],
+      years: ["2025", "2026", "2027", "2028", "2029"],
+      datasets: {
+        growth: "Investment Growth",
+        projected: "Projected Portfolio Value"
+      }
+    },
+    hi: {
+      title: "निवेशक डैशबोर्ड",
+      summary: {
+        portfolioValue: "कुल पोर्टफोलियो मूल्य",
+        growthRate: "वृद्धि दर",
+        projectedReturns: "एआई अनुमानित रिटर्न",
+        projectedValue: "₹210,000 (2029 तक)"
+      },
+      investments: {
+        distribution: "निवेश वितरण",
+        growth: "निवेश वृद्धि",
+        projected: "अनुमानित रिटर्न",
+        suffix: "निवेश"
+      },
+      types: {
+        Equity: "इक्विटी",
+        Debt: "ऋण",
+        P2P: "पीयर-टू-पीयर लेंडिंग",
+        Crowdfunding: "क्राउडफंडिंग"
+      },
+      months: ["जन", "फर", "मार्च", "अप्रैल", "मई"],
+      years: ["2025", "2026", "2027", "2028", "2029"],
+      datasets: {
+        growth: "निवेश वृद्धि",
+        projected: "अनुमानित पोर्टफोलियो मूल्य"
+      }
+    }
+  };
+
+  // Use the content for current language
+  const c = content[language];
+
+  // Investment data with translated types
+  const getInvestmentData = () => {
+    const baseData = [
+      { type: "Equity", value: 40000 },
+      { type: "Debt", value: 20000 },
+      { type: "P2P", value: 15000 },
+      { type: "Crowdfunding", value: 10000 },
+    ];
+
+    return baseData.map(item => ({
+      ...item,
+      translatedType: c.types[item.type]
+    }));
+  };
+
+  const [investmentPortfolio, setInvestmentPortfolio] = useState(getInvestmentData());
+
+  // Format currency based on language
+  const formatCurrency = (amount) => {
+    return language === "en" 
+      ? `₹${amount.toLocaleString('en-IN')}` 
+      : `₹${amount.toLocaleString('hi-IN')}`;
+  };
 
   const totalInvestment = investmentPortfolio.reduce(
     (acc, investment) => acc + investment.value,
@@ -41,7 +123,7 @@ const InvestorDashboard = () => {
 
   // Pie Chart Data for Investment Distribution
   const pieChartData = {
-    labels: investmentPortfolio.map((inv) => inv.type),
+    labels: investmentPortfolio.map((inv) => inv.translatedType),
     datasets: [
       {
         data: investmentPortfolio.map((inv) => inv.value),
@@ -52,10 +134,10 @@ const InvestorDashboard = () => {
 
   // Investment Growth Chart
   const investmentGrowthData = {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May"],
+    labels: c.months,
     datasets: [
       {
-        label: "Investment Growth",
+        label: c.datasets.growth,
         data: [50000, 60000, 75000, 85000, 90000],
         borderColor: "#4CAF50",
         fill: false,
@@ -65,10 +147,10 @@ const InvestorDashboard = () => {
 
   // Projected Returns (AI-Driven)
   const projectedReturns = {
-    labels: ["2025", "2026", "2027", "2028", "2029"],
+    labels: c.years,
     datasets: [
       {
-        label: "Projected Portfolio Value",
+        label: c.datasets.projected,
         data: [100000, 120000, 150000, 180000, 210000],
         borderColor: "#2196F3",
         fill: false,
@@ -78,22 +160,22 @@ const InvestorDashboard = () => {
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
-      <h2 className="text-2xl font-bold mb-4">Investor Dashboard</h2>
+      <h2 className="text-2xl font-bold mb-4">{c.title}</h2>
 
       {/* Investment Summary */}
       <div className="grid grid-cols-3 gap-4">
         <Card>
           <CardContent>
-            <h3 className="text-lg font-semibold">Total Portfolio Value</h3>
+            <h3 className="text-lg font-semibold">{c.summary.portfolioValue}</h3>
             <p className="text-2xl font-bold text-green-600">
-              ₹{totalInvestment}
+              {formatCurrency(totalInvestment)}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardContent>
-            <h3 className="text-lg font-semibold">Growth Rate</h3>
+            <h3 className="text-lg font-semibold">{c.summary.growthRate}</h3>
             <p className="text-2xl font-bold text-blue-600">
               {growthRate.toFixed(2)}%
             </p>
@@ -102,9 +184,9 @@ const InvestorDashboard = () => {
 
         <Card>
           <CardContent>
-            <h3 className="text-lg font-semibold">AI Projected Returns</h3>
+            <h3 className="text-lg font-semibold">{c.summary.projectedReturns}</h3>
             <p className="text-2xl font-bold text-purple-600">
-              ₹210,000 by 2029
+              {c.summary.projectedValue}
             </p>
           </CardContent>
         </Card>
@@ -116,10 +198,10 @@ const InvestorDashboard = () => {
           <Card key={investment.type}>
             <CardContent>
               <h3 className="text-lg font-semibold">
-                {investment.type} Investments
+                {investment.translatedType} {c.investments.suffix}
               </h3>
               <p className="text-2xl font-bold text-blue-600">
-                ₹{investment.value}
+                {formatCurrency(investment.value)}
               </p>
             </CardContent>
           </Card>
@@ -130,18 +212,18 @@ const InvestorDashboard = () => {
       <div className="mt-6 grid grid-cols-3 gap-4">
         <div>
           <h3 className="text-lg font-semibold mb-2">
-            Investment Distribution
+            {c.investments.distribution}
           </h3>
           <Pie data={pieChartData} />
         </div>
 
         <div>
-          <h3 className="text-lg font-semibold mb-2">Investment Growth</h3>
+          <h3 className="text-lg font-semibold mb-2">{c.investments.growth}</h3>
           <Line data={investmentGrowthData} />
         </div>
 
         <div>
-          <h3 className="text-lg font-semibold mb-2">Projected Returns</h3>
+          <h3 className="text-lg font-semibold mb-2">{c.investments.projected}</h3>
           <Line data={projectedReturns} />
         </div>
       </div>
