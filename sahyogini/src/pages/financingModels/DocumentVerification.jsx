@@ -5,6 +5,7 @@ import RevenueFundingApplication from './RevenueBased';
 import PeerToPeerLending from './PeerToPeerLending';
 
 function DocumentVerification({ model }) {
+  console.log("Current model prop:", model.name.en);
   const { language } = useLanguage(); // Get the current language from the context
   const [uploadedDocs, setUploadedDocs] = useState({});
   const [verificationStatus, setVerificationStatus] = useState({});
@@ -92,7 +93,7 @@ function DocumentVerification({ model }) {
   };
 
   if (showFundingComponent) {
-    switch (model.name) {
+    switch (model.name.en) {
       case 'Peer-to-Peer Lending':
         return <PeerToPeerLending />;
       case 'Crowdfunding':

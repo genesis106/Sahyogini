@@ -14,7 +14,7 @@ import FinancingModels from "./pages/financingModels/Models";
 const App = () => {
   return (
     <Router>
-      <Navbar /> {/* Navbar remains at the top */}
+      <Navbar /> 
       <div className="flex flex-col min-h-screen">
         <div className="flex-grow">
           <Routes>
@@ -36,3 +36,5 @@ const App = () => {
 };
 
 export default App;
+
+
