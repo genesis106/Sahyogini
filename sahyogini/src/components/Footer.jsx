@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
-import { Logo } from "./Logo";
+import { Logo } from "./logo";
 import { useLanguage } from "../context/LanguageContext";
 
 export function Footer() {
